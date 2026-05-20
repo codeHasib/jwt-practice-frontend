@@ -1,15 +1,32 @@
+"use client";
+
+import { signOut, useSession } from "@/lib/auth-client";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const Nav = () => {
   const links = (
     <>
       <li>
+        <Link href={"/"}>HOME</Link>
+        <Link href={"/users"}>USERS</Link>
         <Link href={"/auth/signin"}>SIGN IN</Link>
         <Link href={"/auth/signup"}>SIGN UP</Link>
-        <Link href={"/"}>HOME</Link>
       </li>
     </>
   );
+
+  async function getOut() {
+    await signOut();
+    redirect("/");
+  }
+
+  const { data, isPending } = useSession();
+
+  if (isPending) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <div className="navbar bg-base-100 shadow-sm">
@@ -45,7 +62,17 @@ const Nav = () => {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          {}{" "}
+          {data ? (
+            <a onClick={getOut} className="btn btn-error">
+              Sign Out
+            </a>
+          ) : (
+            <Link className="btn btn-accent" href={"/auth/signin"}>
+              {" "}
+              Sign In{" "}
+            </Link>
+          )}
         </div>
       </div>
     </div>
