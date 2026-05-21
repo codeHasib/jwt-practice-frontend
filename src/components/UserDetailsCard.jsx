@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 
-const UserDetailsCard = ({ user }) => {
+const UserDetailsCard = ({ user, deleteUser }) => {
   const { name, email, img, desc, role } = user;
   return (
     <div>
@@ -19,6 +21,30 @@ const UserDetailsCard = ({ user }) => {
           <p className="font-bold"> {email} </p>
           <h3 className="font-extrabold text-xl"> {role} </h3>
           <p> {desc} </p>
+
+          <button
+            className="btn btn-error"
+            onClick={() => document.getElementById("my_modal_5").showModal()}
+          >
+            DELETE USER
+          </button>
+          <dialog
+            id="my_modal_5"
+            className="modal modal-bottom sm:modal-middle"
+          >
+            <div className="modal-box">
+              <h3 className="font-bold text-lg"> Warning! </h3>
+              <p className="py-4">Are you sure you want to delete {name}?</p>
+              <div className="modal-action">
+                <form method="dialog">
+                  <button className="btn">Close</button>
+                  <button onClick={deleteUser} className="btn btn-error">
+                    Yes Delete it
+                  </button>
+                </form>
+              </div>
+            </div>
+          </dialog>
         </div>
       </div>
     </div>

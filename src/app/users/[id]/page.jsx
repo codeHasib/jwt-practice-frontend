@@ -1,4 +1,5 @@
 import UserDetailsCard from "@/components/UserDetailsCard";
+import { deleteUser } from "@/lib/actions";
 import { auth } from "@/lib/auth";
 import { getDataById } from "@/lib/getData";
 import { headers } from "next/headers";
@@ -9,11 +10,18 @@ const UserDetailsPage = async ({ params }) => {
   });
   const { id } = await params;
   const userDetails = await getDataById(id, token);
-  console.log(userDetails);
+
+  const deleteFunc = async () => {
+    "use server";
+    await deleteUser(id, token);
+  };
 
   return (
     <div>
-      <UserDetailsCard user={userDetails}></UserDetailsCard>
+      <UserDetailsCard
+        user={userDetails}
+        deleteUser={deleteFunc}
+      ></UserDetailsCard>
     </div>
   );
 };
