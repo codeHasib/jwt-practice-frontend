@@ -11,7 +11,7 @@ const SignInForm = () => {
       email: userData.email,
       password: userData.password,
       rememberMe: true,
-      // callbackURL: "/",
+      callbackURL: "/",
     });
 
     if (!data) {
@@ -19,7 +19,6 @@ const SignInForm = () => {
     } else {
       alert("User Logged In");
     }
-    
   }
   return (
     <div>

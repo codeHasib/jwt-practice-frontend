@@ -5,11 +5,18 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 const Nav = () => {
+  const { data, isPending } = useSession();
+
+  if (isPending) {
+    return <p>Loading...</p>;
+  }
+
   const links = (
     <>
       <li>
         <Link href={"/"}>HOME</Link>
         <Link href={"/users"}>USERS</Link>
+        {data && <Link href={"/add-users"}>ADD USERS</Link>}
         <Link href={"/auth/signin"}>SIGN IN</Link>
         <Link href={"/auth/signup"}>SIGN UP</Link>
       </li>
@@ -19,12 +26,6 @@ const Nav = () => {
   async function getOut() {
     await signOut();
     redirect("/");
-  }
-
-  const { data, isPending } = useSession();
-
-  if (isPending) {
-    return <p>Loading...</p>;
   }
 
   return (
