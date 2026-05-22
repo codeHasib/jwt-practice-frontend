@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
-const UserDetailsCard = ({ user, deleteUser }) => {
-  const { name, email, img, desc, role } = user;
+const UserDetailsCard = ({ user, deleteUser, updateUserFunc }) => {
+  const { _id, name, email, img, desc, role } = user;
   return (
     <div>
       <div className="w-full h-50">
@@ -45,6 +46,9 @@ const UserDetailsCard = ({ user, deleteUser }) => {
               </div>
             </div>
           </dialog>
+          <Link href={`/users/edit/${_id}`} className="btn btn-accent w-full">
+            UPDATE USER
+          </Link>
         </div>
       </div>
     </div>
