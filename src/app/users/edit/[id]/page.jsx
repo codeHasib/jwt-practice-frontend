@@ -3,7 +3,6 @@ import { updateUser } from "@/lib/actions";
 import { auth } from "@/lib/auth";
 import { getDataById } from "@/lib/getData";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 const UserUpdatePage = async ({ params }) => {
   const { token } = await auth.api.getToken({

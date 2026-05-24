@@ -1,10 +1,15 @@
 "use client";
 
+import { useSession } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 
 const UserDetailsCard = ({ user, deleteUser, updateUserFunc }) => {
-  const { _id, name, email, img, desc, role } = user;
+  const { _id, name, ownerId, email, img, desc, role } = user;
+
+  const { data, error } = useSession();
+  const userId = data?.user?.id;
+
   return (
     <div>
       <div className="w-full h-50">
@@ -22,33 +27,47 @@ const UserDetailsCard = ({ user, deleteUser, updateUserFunc }) => {
           <p className="font-bold"> {email} </p>
           <h3 className="font-extrabold text-xl"> {role} </h3>
           <p> {desc} </p>
-
-          <button
-            className="btn btn-error"
-            onClick={() => document.getElementById("my_modal_5").showModal()}
-          >
-            DELETE USER
-          </button>
-          <dialog
-            id="my_modal_5"
-            className="modal modal-bottom sm:modal-middle"
-          >
-            <div className="modal-box">
-              <h3 className="font-bold text-lg"> Warning! </h3>
-              <p className="py-4">Are you sure you want to delete {name}?</p>
-              <div className="modal-action">
-                <form method="dialog">
-                  <button className="btn">Close</button>
-                  <button onClick={deleteUser} className="btn btn-error">
-                    Yes Delete it
-                  </button>
-                </form>
-              </div>
+          {userId === ownerId ? (
+            <div>
+              <button
+                className="btn btn-error"
+                onClick={() =>
+                  document.getElementById("my_modal_5").showModal()
+                }
+              >
+                DELETE USER
+              </button>
+              <dialog
+                id="my_modal_5"
+                className="modal modal-bottom sm:modal-middle"
+              >
+                <div className="modal-box">
+                  <h3 className="font-bold text-lg"> Warning! </h3>
+                  <p className="py-4">
+                    Are you sure you want to delete {name}?
+                  </p>
+                  <div className="modal-action">
+                    <form method="dialog">
+                      <button className="btn">Close</button>
+                      <button onClick={deleteUser} className="btn btn-error">
+                        Yes Delete it
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+              <Link
+                href={`/users/edit/${_id}`}
+                className="btn btn-accent w-full"
+              >
+                UPDATE USER
+              </Link>
             </div>
-          </dialog>
-          <Link href={`/users/edit/${_id}`} className="btn btn-accent w-full">
-            UPDATE USER
-          </Link>
+          ) : (
+            <div className="text-2xl text-center font-bold text-red-400">
+              <p>Not Authorized to update</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
